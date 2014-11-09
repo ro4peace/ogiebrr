@@ -1,0 +1,74 @@
+quiz_02,164,391,4	script	Stalker	909,{
+
+if ( StalkerSkill != 0 )goto Remove_Skill;
+if ( getskilllv(225) == 0 ) goto End_Talk;
+if ( getskilllv(225) > 0 ) goto Start_Talk;
+
+Remove_Skill:
+	skill StalkerSkill,0,0;
+	set StalkerSkill,0;
+	dispbottom "[ Stalker NPC ] : Previous Skills has been Removed..";
+	dispbottom "[ Stalker NPC ] : Even Skills Icons remained. But [ Un-Useable ]";
+	end;
+
+End_Talk:
+	mes "[ ^FF0000Stalker NPC^000000 ]";
+	mes "Please make sure you have the skills required to copy a skills.";
+	close;
+
+// -- Edit Format :   "<Skill Name>", for each case at a new line in order for a Better viewing..
+Start_Talk:
+mes "[ ^FF0000Stalker NPC^000000 ]";
+mes "Choose which skills you want to copy..but a Payment will be charged for each skill you choose.";
+next;
+switch(select("Jupiter Thuner",				// Case 1:
+			"Arrow Storm",				// Case 2:
+			"Aimed Bolt",				// Case 3:
+			"Arrow Repel",				// Case 4:
+			"Acid Terror",				// Case 5:
+			"Arrow Shower",				// Case 6:
+			"Aspersio",					// Case 7:
+			"B.S Sacramenti",			// Case 8:
+			"Bowling Bash",				// Case 9:
+			"Backstab")){				// Case 10:
+
+
+// -- Edit Format :  callsub S_CopySkill,<Skill ID>,<Skill Level 10>,<Skill Cost>;
+// -- Leave the Level as 10 better.because after they relog ..they will auto get level 10 Skills.
+// -- I think can add up to 128 Case. Which is 128 Skills choose-able~
+// -- If you want it to announce then add "announce" at the back of <skill cost> like Case 10.
+
+	case 1:	callsub S_CopySkill,84,27,500000;				// Jupiter Thuner
+	case 2:	callsub S_CopySkill,2233,getskilllv(225),500000;				// Arrow Storm
+	case 3:	callsub S_CopySkill,2236,getskilllv(225),500000;				// Aimed Bolt 
+	case 4:	callsub S_CopySkill,148,getskilllv(225),500000;				// Arrow Repel
+	case 5:	callsub S_CopySkill,230,getskilllv(225),500000;				// Acid Terror
+	case 6:	callsub S_CopySkill,47,getskilllv(225),500000;				// Arrow Shower
+	case 7:	callsub S_CopySkill,68,getskilllv(225),500000;				// Aspersio
+	case 8:	callsub S_CopySkill,69,getskilllv(225),500000;				// B.S Sacramenti
+	case 9:	callsub S_CopySkill,62,getskilllv(225),500000;				// Bowling Bash
+	case 10:	callsub S_CopySkill,212,getskilllv(225),500000,"announce";			// Backstab
+	}
+	
+	
+S_CopySkill:
+	if ( Zeny < getarg(2)){
+		mes "[ ^FF0000Stalker NPC^000000 ]";
+		mes "You must have at least "+getarg(2)+" Zeny to get the Skill.";
+		close;
+		}
+	skill getarg(0),getarg(1),0;
+	set Zeny,Zeny-getarg(2);
+	set StalkerSkill,getarg(0);
+	dispbottom "[ Stalker NPC ] : New Skill fee is [ "+getarg(2)+" Zeny ].";
+	dispbottom "[ Stalker NPC ] : Check Your Skill Tree Now..for the New Skill.";
+	if (compare(getarg(3),"announce")) announce strcharinfo(0) + " has just obtained a new skill !!",bc_map;
+	close;
+
+OnPCLoginEvent:
+	if ( StalkerSkill != 0 ){
+	skill StalkerSkill,getskilllv(225),0;
+	}
+	end;
+	
+}

@@ -1,0 +1,170 @@
+//==============================================================================//
+//= Script Release : Refiner Ticket  [ Version 1.5 ]
+//==================================By==========================================//
+//= Idea : ManiacSociety
+//==============================================================================//
+//= Helper : E M I S T R Y
+//==============================================================================//
+//= D E S C R I P T I O N S
+//==============================================================================//
+// -- 1. Character can choose what equipments they want to be refined.
+// -- 2. This NPC only have 1 Time Usage.
+//		 If it is set to Account Based then that account can use 1 times.
+//		 If it is set to Character Based then all new character can use 1 times.
+// -- 3. Complete skills / Skill Points will be given if it is set to be.
+// -- 4. Base Level and Job Level will be given upon Job Change.
+// -- 5. Allow players to click an items to call out the NPC.
+//==============================================================================//
+//= V E R S I O N S
+//==============================================================================//
+// -- [ 1.5 ] : Added 2 Refine Mode + Refinable check before Refine
+//			[ Mode 0 - Refine the Equipments +1 everytime. ] 
+//			[ Mode 1 - Refine the Equipments to Max Refine Limits. ]
+// -- [ 1.4 ] : Simplify Refine Commands .							
+// -- [ 1.3 ] : Added Easy Configuratuin Settings .			
+// -- [ 1.2 ] : Equipments can be refined to Max in 1 time .							
+// -- [ 1.1 ] : Changed to Ticket Type Refiner .									
+// -- [ 1.0 ] : Simple Refiner NPC.						
+//==============================================================================//
+//= R U L E S
+//==============================================================================//
+// -- 1. Do not use for exchanging purpose.										
+// -- 2. Do not claim it as yours.												
+// -- 3. Do not change or remove the credits.
+// -- 4. Do not sell the script in order to get paid.
+// -- 5. Do not re-sharing upon modified without permission.
+//==============================================================================//
+
+// -- Sample Item DB [ Refiner Ticket ] 
+// -- Set Item Type to 11 
+//501,Red_Potion,Red Potion,11,50,,10,,,,,0xFFFFFFFF,7,2,,,,,,{doevent "TicketRefiner::OnUsed"; },{},{}
+
+
+turbo_room,77,96,5	script	Refiner	63,{
+OnUsed:
+set .Mode,1;			// Refine mode [ 0 = Refine +1 Each time  / 1 = Refine to Max Limit ]
+set .EquipCheck,1;		// Check Equips is refineable or not. [ 0 = Disable / 1 = Enable ]
+set .MaxRefine,10;		// Max Refine Limit
+set .TicketID,985;		// Ticket ID
+
+
+switch(select( ( getequiprefinerycnt(1) >= .MaxRefine || getequipisequiped(1) == 0 )?"":"Upper Headgear [ ^4EEE94"+getequipname(1)+"^000000 ]",
+			( getequiprefinerycnt(2) >= .MaxRefine || getequipisequiped(2) == 0 )?"":"Armor [ ^4EEE94"+getequipname(2)+"^000000 ]",
+			( getequiprefinerycnt(3) >= .MaxRefine || getequipisequiped(3) == 0 )?"":"Left Hand [ ^4EEE94"+getequipname(3)+"^000000 ]",
+			( getequiprefinerycnt(4) >= .MaxRefine || getequipisequiped(4) == 0 )?"":"Right Hand [ ^4EEE94"+getequipname(4)+"^000000 ]",
+			( getequiprefinerycnt(5) >= .MaxRefine || getequipisequiped(5) == 0 )?"":"Garment [ ^4EEE94"+getequipname(5)+"^000000 ]",
+			( getequiprefinerycnt(6) >= .MaxRefine || getequipisequiped(6) == 0 )?"":"Shoes [ ^4EEE94"+getequipname(6)+"^000000 ]",
+			( getequiprefinerycnt(7) >= .MaxRefine || getequipisequiped(7) == 0 )?"":"Accessory [ ^4EEE94"+getequipname(7)+"^000000 ]",
+			( getequiprefinerycnt(8) >= .MaxRefine || getequipisequiped(8) == 0 )?"":"Accessory [ ^4EEE94"+getequipname(8)+"^000000 ]",
+			( getequiprefinerycnt(9) >= .MaxRefine || getequipisequiped(9) == 0 )?"":"Middle Headgear [ ^4EEE94"+getequipname(9)+"^000000 ]",
+			( getequiprefinerycnt(10) >= .MaxRefine || getequipisequiped(10) == 0 )?"":"Lower Headgear [ ^4EEE94"+getequipname(10)+"^000000 ]",
+				"^FF0000Close^000000")) {
+		
+		Case 1:
+			if (countitem(985) < 10) {
+			mes "[Refiner]";
+			mes "Sorry, please bring at least 10pieces of elunium to proceed.";
+			close;
+			}
+			if ( .Mode == 0 ) { callsub RefineSystem,1; }
+			if ( .Mode == 1 ) { callsub MaxRefineSystem,1; }	
+		Case 2:
+			if (countitem(985) < 10) {
+			mes "[Refiner]";
+			mes "Sorry, please bring at least 10pieces of elunium to proceed.";
+			close;
+			}
+			if ( .Mode == 0 ) { callsub RefineSystem,2; }
+			if ( .Mode == 1 ) { callsub MaxRefineSystem,2; }	
+		Case 3:
+			if (countitem(985) < 10) {
+			mes "[Refiner]";
+			mes "Sorry, please bring at least 10pieces of elunium to proceed.";
+			close;
+			}
+			if ( .Mode == 0 ) { callsub RefineSystem,3; }
+			if ( .Mode == 1 ) { callsub MaxRefineSystem,3; }	
+		Case 4:
+			if (countitem(984) < 10) {
+			mes "[Refiner]";
+			mes "Sorry, please bring at least 10pieces of oridecon to proceed.";
+			close;
+			}
+			if ( .Mode == 0 ) { callsub RefineSystem,4; }
+			if ( .Mode == 1 ) { callsub MaxRefineSystem,4; }	
+		Case 5:
+			if (countitem(985) < 10) {
+			mes "[Refiner]";
+			mes "Sorry, please bring at least 10pieces of elunium to proceed.";
+			close;
+			}
+			if ( .Mode == 0 ) { callsub RefineSystem,5; }
+			if ( .Mode == 1 ) { callsub MaxRefineSystem,5; }	
+		Case 6:
+			if (countitem(985) < 10) {
+			mes "[Refiner]";
+			mes "Sorry, please bring at least 10pieces of elunium to proceed.";
+			close;
+			}
+			if ( .Mode == 0 ) { callsub RefineSystem,6; }
+			if ( .Mode == 1 ) { callsub MaxRefineSystem,6; }	
+		Case 7:
+			if (countitem(985) < 10) {
+			mes "[Refiner]";
+			mes "Sorry, please bring at least 10pieces of elunium to proceed.";
+			close;
+			}
+			if ( .Mode == 0 ) { callsub RefineSystem,7; }
+			if ( .Mode == 1 ) { callsub MaxRefineSystem,7; }	
+		Case 8:
+			if (countitem(985) < 10) {
+			mes "[Refiner]";
+			mes "Sorry, please bring at least 10pieces of elunium to proceed.";
+			close;
+			}
+			if ( .Mode == 0 ) { callsub RefineSystem,8; }
+			if ( .Mode == 1 ) { callsub MaxRefineSystem,8; }	
+		Case 9:
+			if (countitem(985) < 10) {
+			mes "[Refiner]";
+			mes "Sorry, please bring at least 10pieces of elunium to proceed.";
+			close;
+			}
+			if ( .Mode == 0 ) { callsub RefineSystem,9; }
+			if ( .Mode == 1 ) { callsub MaxRefineSystem,9; }	
+		Case 10:
+			if (countitem(985) < 10) {
+			mes "[Refiner]";
+			mes "Sorry, please bring at least 10pieces of elunium to proceed.";
+			close;
+			}
+			if ( .Mode == 0 ) { callsub RefineSystem,10; }
+			if ( .Mode == 1 ) { callsub MaxRefineSystem,10; }	
+		Case 11:	close;	
+}
+
+RefineSystem:
+if ( .EquipCheck == 1 && getequipisenableref(getarg(0)) == 0 ){
+mes "I cant refine this items. Because it is unrefinable.";
+close;
+}
+	successrefitem (getarg(0));
+	message strcharinfo(0),"The Equipments has been refined.";
+	delitem .TicketID,10;
+	close;
+
+MaxRefineSystem:
+if ( .EquipCheck == 1 && getequipisenableref(getarg(0)) == 0 ){
+mes "I cant refine this items. Because it is unrefinable.";
+emotion e_spit;
+close;
+}
+	for ( set .@i,getequiprefinerycnt(getarg(0)); getequiprefinerycnt(getarg(0)) < .MaxRefine; set .@i,getequiprefinerycnt(getarg(0)) ){
+	successrefitem (getarg(0));
+	}
+	emotion e_ok;
+	message strcharinfo(0),"The Equipments has been refined.";
+	delitem .TicketID,10;
+	close;
+
+}

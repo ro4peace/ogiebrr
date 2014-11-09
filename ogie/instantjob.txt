@@ -1,0 +1,201 @@
+turbo_room,95,76,5	script	Instant Job Master	871,{
+if ($@LadderChatRoom == 1) {
+		waitingroom "Instant Job Master",0;
+}
+set $@LadderChatRoom, 1;
+	mes "[Instant Job Master]";
+	mes "Please be reminded that you need to be Novice";
+	mes "Base level 1 and Job level 1 to change your job";
+    next;
+    if(class!=Job_Novice)close;
+    menu	"Lord Knight",L0,"Assasin Cross",L1,"Sniper",L2,"High Wizard",L3,"High Priest",L4,"Whitesmith",L5,"Paladin",L6,"Stalker",L7,( Sex == 1 )?"":"Clown",L8,( Sex == 0 )?"":"Gypsy",L9,"Professor",L10,"Champion",L11,"Creator",L12,"Soul Linker",L13,"Taekwon Kid",L14,"Taekwon Master",L15,"Ninja",L16,"Gunslinger",L17,"Cancel",LEnd;
+
+    //--Lordknight
+    L0:
+        jobchange 4008;
+        set baselevel,255;
+        set joblevel,100;
+        set skillpoint,150;
+        ResetSkill;
+        ResetStatus;
+        close;
+    //--Assasin Cross
+    L1:
+        jobchange 4013;
+        set baselevel,255;
+        set joblevel,100;
+        set skillpoint,150;
+        ResetSkill;
+        ResetStatus;
+        close;
+
+    //--Sniper
+    L2:
+        jobchange 4012;
+        set baselevel,255;
+        set joblevel,100;
+        set skillpoint,150;
+        ResetSkill;
+        ResetStatus;
+        close;
+
+    //--High Wizard
+    L3:
+        jobchange 4010;
+        set baselevel,255;
+        set joblevel,100;
+        set skillpoint,150;
+        ResetSkill;
+        ResetStatus;
+        close;
+    
+    //--High Priest    
+    L4:
+        jobchange 4009;
+        set baselevel,255;
+        set joblevel,100;
+        set skillpoint,150;
+        ResetSkill;
+        ResetStatus;
+        close;
+
+    //--Whitesmith    
+    L5:
+        jobchange 4011;
+        set baselevel,255;
+        set joblevel,100;
+        set skillpoint,150;
+        ResetSkill;
+        ResetStatus;
+        close;
+
+    //--Paladin
+    L6:
+        jobchange 4015;
+        set baselevel,255;
+        set joblevel,100;
+        set skillpoint,150;
+        ResetSkill;
+        ResetStatus;
+        close;
+
+    //--Stalker
+    L7:
+        jobchange 4018;
+        set baselevel,255;
+        set joblevel,100;
+        set skillpoint,150;
+        ResetSkill;
+        ResetStatus;
+        close;
+
+    //--Clown
+    L8:
+        jobchange 4020;
+        set baselevel,255;
+        set joblevel,100;
+        set skillpoint,150;
+        ResetSkill;
+        ResetStatus;
+        close;
+
+    //--Gypsy
+    L9:
+        jobchange 4021;
+        set baselevel,255;
+        set joblevel,100;
+        set skillpoint,150;
+        ResetSkill;
+        ResetStatus;
+        close;
+
+    //--Professor
+    L10:
+        jobchange 4017;
+        set baselevel,255;
+        set joblevel,100;
+        set skillpoint,150;
+        ResetSkill;
+        ResetStatus;
+        close;
+
+    //--Champion
+    L11:
+        jobchange 4016;
+        set baselevel,255;
+        set joblevel,100;
+        set skillpoint,150;
+        ResetSkill;
+        ResetStatus;
+        close;
+
+    //--Creator
+    L12:
+        jobchange 4019;
+        set baselevel,255;
+        set joblevel,100;
+        set skillpoint,150;
+        ResetSkill;
+        ResetStatus;
+        close;
+
+    //--Soul Linker
+    L13:
+        jobchange 4049;
+        set baselevel,255;
+        set Joblevel,100;
+        set skillpoint,150;
+        ResetSkill;
+        ResetStatus;
+        close;
+
+    //--Taekwon Kid
+    L14:
+        jobchange 4046;
+        set baselevel,255;
+        set Joblevel,100;
+        set skillpoint,150;
+        ResetSkill;
+        ResetStatus;
+        close;
+
+    //--Taekwon Master
+    L15:
+        jobchange 4047;
+        set baselevel,255;
+        set Joblevel,100;
+        set skillpoint,150;
+        ResetSkill;
+        ResetStatus;
+        close;
+
+    //--Ninja
+    L16:
+        jobchange 25;
+        set baselevel,255;
+        set Joblevel,100;
+        set skillpoint,150;
+        ResetSkill;
+        ResetStatus;
+        close;
+
+    //--Gunslinger
+    L17:
+        jobchange 24;
+        set baselevel,255;
+        set Joblevel,100;
+        set skillpoint,150;
+        ResetSkill;
+        ResetStatus;
+        close;
+
+	//-- End
+	LEnd:
+	mes "[Instant Job Master]";
+	mes "Ok, i dont mind if you changed your mind.";
+	close;
+	
+	
+}
+
+	

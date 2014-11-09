@@ -1,0 +1,92 @@
+//===== eAthena Script =======================================
+//= Custom-Currency Multi-Shop
+//===== By: ==================================================
+//= Euphy
+//===== Current Version: =====================================
+//= 1.2
+//===== Description: =========================================
+//= Allows for better organization in a single shop call.
+//= Note that there are two configuration areas.
+//============================================================
+
+// -------------------- Config 1 --------------------
+// For each shop added, copy this MSHOPX dummy data.
+// Write your shop names in the select() function.
+
+-	shop	MSHOP1	-1,512:-1
+-	shop	MSHOP2	-1,512:-1
+-	shop	MSHOP3	-1,512:-1
+-	shop	MSHOP4	-1,512:-1
+-	shop	MSHOP5	-1,512:-1
+-	shop	MSHOP6	-1,512:-1
+-	shop	MSHOP7	-1,512:-1
+-	shop	MSHOP8	-1,512:-1
+-	shop	MSHOP9	-1,512:-1
+
+turbo_room,114,98,4	script	fRO NPC	790,{
+
+	set @s, select("Usables:Headgears:Armors:Weapons:Garments:Shoes:Accessories:Cards:Donate Items");
+
+// --------------------------------------------------
+
+	message strcharinfo(0),"This shop only accepts "+getitemname(.Currency[@s])+".";
+	dispbottom "You have "+countitem(.Currency[@s])+" "+getitemname(.Currency[@s])+".";
+	callshop "MSHOP"+@s,1;
+	npcshopattach "MSHOP"+@s;
+	end;
+
+OnBuyItem:
+	set .@i,0;
+	while (.@i < getarraysize(@bought_nameid)) {
+		set .@j, 0;
+		while (.@j < getarraysize(getd(".Shop"+@s))) {
+			if(getd(".Shop"+@s+"["+.@j+"]") == @bought_nameid[.@i]) {
+				set @itemcost, (getd(".Shop"+@s+"["+(.@j+1)+"]") * @bought_quantity[.@i]);
+				set @totalcost, @totalcost + @itemcost;
+				break; }
+			set .@j, .@j+2; }
+		set .@i, .@i+1; }
+	if (@totalcost > countitem(.Currency[@s])) dispbottom "You don't have enough "+getitemname(.Currency[@s])+".";
+	else {
+		set .@i,0;
+		while (.@i < getarraysize(@bought_nameid)) {
+			getitem @bought_nameid[.@i], @bought_quantity[.@i];
+			dispbottom "Purchased "+@bought_quantity[.@i]+"x "+getitemname(@bought_nameid[.@i])+".";
+			set .@i, .@i+1; }
+		delitem .Currency[@s], @totalcost; }
+	set @totalcost, 0;
+	deletearray @bought_nameid[0], 128;
+	deletearray @bought_quantity[0], 128;
+	end;
+
+OnInit:
+
+// -------------------- Config 2 --------------------
+// Currency:  The ID of each shop currency,
+//    in the same order as the shops.
+// Shop order follows that of the select() call,
+//   and is formatted "ID1,Count1,ID2,Count2,..."
+
+	setarray .Currency[1],7179,7179,7179,7179,7179,7179,7179,7179,20107;
+	setarray .Shop1[0],7776,1,14115,20,13574,1,13572,1,13604,1,13592,1,13596,1,13578,1,14232,1,12103,5,12710,1,12214,1,12210,10;
+	setarray .Shop2[0],5495,80,5471,90,5421,200,5498,100,5800,50,5305,20,5564,100,5521,20,5468,20,5490,20,5375,15,5313,18,5397,12,5423,10,5311,10,5266,15,5213,20,5200,10,5378,10,30004,100,30006,70,5529,70,5366,30,5480,10,5398,50,5446,20,5478,25,5496,15,5211,30,5807,28,5465,30,5360,10,5396,40,5426,20,5497,15,5489,20,5393,20,5226,30,5469,30,5561,20,5559,15,5501,25,5333,25,5435,26,5661,30,5310,35,5535,27,5544,25,5255,10,5385,10,5476,40,5022,40,5214,30,5502,30,5568,40,5520,20,5243,35;
+	setarray .Shop3[0],2345,15,2347,15,2351,15,2349,15,2383,30,2382,30,2375,30,2374,30,2378,40,2377,40,2379,35,2380,35,2381,35,2376,40,2387,40;
+	setarray .Shop4[0],13416,50,1640,50,1927,50,1981,50,1641,50,1310,50,13177,50,13179,50,13110,50,13176,50,13178,50,13307,50,1743,50,1425,50,1486,50,1426,50,13036,50,1978,50,1530,30,1228,10,13412,30,13413,30,1924,50,1633,50;
+	setarray .Shop5[0],2538,35,2539,35,2537,30,2542,40,2540,40,2536,20;
+	setarray .Shop6[0],2423,60,2436,40,2433,35,2437,40,2435,40,2410,30,2440,35;
+	setarray .Shop7[0],2630,25,2629,50,2712,45,2744,40,2729,15,2733,25;
+	setarray .Shop8[0],4145,30,4365,50,4399,25,4357,30,4376,100,4441,60;
+	setarray .Shop9[0],20023,4,5592,8,20129,8,20012,12,20044,2,20037,2,20050,4,20045,3,20047,3,20048,3,2447,4,2369,4;
+
+// --------------------------------------------------
+
+	set .@i,1;
+	while (.@i <= getarraysize(.Currency)) {
+		set .@j,0;
+		while (.@j < getarraysize(getd(".Shop"+.@i))) {
+			npcshopdelitem "MSHOP"+.@i,512;
+			npcshopadditem "MSHOP"+.@i, getd(".Shop"+.@i+"["+.@j+"]"), getd(".Shop"+.@i+"["+(.@j+1)+"]");
+			set .@j, .@j+2; }
+		set .@i, .@i+1; }
+	end;
+}

@@ -1,0 +1,200 @@
+-	script	LMS#disable	-1,{
+
+OnInit:
+disablenpc "Mr. Banker";
+disablenpc "All Job Manager";
+end;
+}
+
+-	script	LMS	-1,{
+
+OnClock0000:
+OnClock0200:
+OnClock0400:
+OnClock0600:
+OnClock0800:
+OnClock1000:
+OnClock1200:
+OnClock1400:
+OnClock1600:
+OnClock1800:
+OnClock2000:
+OnClock2200:// Edit this to what ever you want. note : OnClock0000 is 12 midnight and OnClock1200 is 12 Noon
+goto startlmsevent;
+
+startlmsevent:
+announce "Mr. Manager: The Last Man Standing event will be starting shortly.",0;
+sleep2 10000;
+announce "Mr. Manager: Those who want to play, please proceed to Turbo Room and Register.",0;
+sleep2 10000;
+announce "Mr. Manager: After 1 Minute the Registration will close.",0;
+sleep2 10000;
+announce "Mr. Manager: Please go to Turbo Room and Register now if you want to join.",0;
+enablenpc "All Job Manager";
+initnpctimer;
+end;
+
+OnTimer30000:
+announce "Mr. Manager: Last 30 seconds.",0;
+sleep2 5000;
+announce "Mr. Manager: If you want to join please Register in Turbo Room.",0;
+end;
+
+OnTimer50000:
+announce "Mr. Manager: Last 10 seconds.",0;
+end;
+
+OnTimer55000:
+announce "Mr. Manager: 5.",0;
+end;
+
+OnTimer56000:
+announce "Mr. Manager: 4.",0;
+end;
+
+OnTimer57000:
+announce "Mr. Manager: 3.",0;
+end;
+
+OnTimer58000:
+announce "Mr. Manager: 2.",0;
+end;
+
+OnTimer59000:
+announce "Mr. Manager: 1.",0;
+end;
+
+OnTimer60000:
+announce "Mr. Manager: Time's up.",0;
+end;
+
+OnTimer61000:
+disablenpc "All Job Manager";
+donpcevent "Mr. Banker::OnEnable";
+stopnpctimer;
+end;
+}
+//---------All Job Registration---------------
+turbo_room,100,111,5	script	All Job Manager	106,{
+mes " [ All Job Manager ] ";
+warp "pvpmap",43,48;
+end;
+}
+
+//--------------------------
+
+//--------------------------
+pvpmap,42,48,6	script	Mr. Banker	56,{
+
+mes "[Banker]";
+mes "Congrats. You've won.";
+next;
+announce "Mr. Manager: We have a winner! well done "+strcharinfo(0)+".",0;
+getitem 7179, 50; // Change This item id to what ever you want . item id,amount
+mes "You will return now";
+warp "turbo_room",100,99;
+disablenpc "Mr. Banker";
+close;
+end;
+OnEnable:
+pvpoff "pvpmap";
+mapannounce "pvpmap","Mr. Manager:The Last Man Standing Event will start shortly",0;
+sleep2 10000;
+mapannounce "pvpmap","Mr. Manager:But before we start this is just a few reminders..",0;
+sleep2 10000;
+mapannounce "pvpmap","Mr. Manager:Using Cloaking , Hiding is strictly not allowed..",0;
+sleep2 10000;
+mapannounce "pvpmap","Mr. Manager: Only the Last Man Standing will win this event!!",0;
+sleep2 10000;
+mapannounce "pvpmap","Mr. Manager: What are we waiting for?..Let's Get Ready to Rumble!!...",0;
+sleep2 10000;
+goto L_Start;
+end;
+L_Start:
+if(getmapusers("pvpmap") == 1) goto L_Champ;
+if(getmapusers("pvpmap") == 0) goto L_None;
+if(getmapusers("pvpmap") > 1) {
+mapannounce "pvpmap","Mr. Manager: Get ready at the count of 5 we will start!....",0;
+sleep2 10000;
+mapannounce "pvpmap","Mr. Manager: 5",0;
+sleep2 5000;
+mapannounce "pvpmap","Mr. Manager: 4",0;
+sleep2 4000;
+mapannounce "pvpmap","Mr. Manager: 3",0;
+sleep2 3000;
+mapannounce "pvpmap","Mr. Manager: 2",0;
+sleep2 2000;
+mapannounce "pvpmap","Mr. Manager: 1",0;
+sleep2 1000;
+pvpon "pvpmap";
+goto timer;
+end;
+}
+timer:
+initnpctimer;
+end;
+
+OnTimer1000:
+end;
+
+OnTimer1100:
+if(getmapusers("pvpmap") == 1) goto L_Champ;
+if(getmapusers("pvpmap") > 2) goto timer;
+if(getmapusers("pvpmap") == 2) goto champ;
+stopnpctimer;
+end;
+
+champ:
+announce "Mr. Manager: Last 2 Brave warriors are still alive!",0;
+sleep2 10000;
+if(getmapusers("pvpmap") == 1) goto L_Champ;
+if(getmapusers("pvpmap") > 1) goto timer;
+end;
+
+L_Champ:
+mapannounce "quiz_02","Mr. Banker: Please talk to me to get your prize..",0;
+pvpoff "pvpmap";
+enablenpc "Mr. Banker";
+end;
+
+L_None:
+disablenpc "Banker";
+pvpoff "pvpmap";
+end;
+}
+//----- Die = warp prt -----
+-	script	Killa_warp	-1,{
+
+OnPCDieEvent:
+	getmapxy(.@map$,.@x,.@y,0);
+	if(.@map$=="pvpmap")
+	{
+		set #kill_point, 0;
+		announce ""+strcharinfo(0)+" died, and out of the game!.",bc_all;
+		warp "turbo_room",99,99;
+		end;
+	}
+OnPCKillEvent:
+	getmapxy(.@map$,.@x,.@y,0);
+	if(.@map$=="pvpmap")
+	{
+	set #kill_point,#kill_point+1;
+	if ( #kill_point % 4 == 0) {
+	announce ""+strcharinfo(0)+" have made 4 Consecutive Kills!!He will be granted an item",bc_all;
+	getitem 14232,50;
+	end;
+	}
+	}
+}
+
+
+// == Mapflags
+pvpmap	mapflag	nowarp
+pvpmap	mapflag	nowarpto
+pvpmap	mapflag	noteleport
+pvpmap	mapflag	nosave
+pvpmap	mapflag	nomemo
+pvpmap	mapflag	nobranch
+pvpmap	mapflag	pvp_noparty
+pvpmap	mapflag	restricted	1
+pvpmap	mapflag	noicewall
