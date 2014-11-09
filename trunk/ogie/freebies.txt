@@ -1,0 +1,19 @@
+new_1-1,56,117,4	script	Freebies	112,{
+	delwaitingroom;
+	waitingroom "Free Item Here!",0;   // Look on the configuration!
+if( !#Freebies ){
+set #Freebies,1;
+mes "Welcome to CeresRO! This is your gift...";
+getitem 11502, 300;
+getitem 11501, 500;
+getitem 14533, 10;
+getitem 14592, 10;
+getitem 12210, 10;
+getitem 7621, 10;
+getitem 2306, 1;
+getitem 4003, 1;
+}else{
+mes "Sorry, You have claim the Reward already.";
+}
+close;
+}

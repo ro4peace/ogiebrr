@@ -1,0 +1,114 @@
+//===== eAthena Script ======================================= 
+//= Pvp Warper 
+//===== By: ================================================== 
+//= FatterKiller|ROcrew
+//===== Current Version: ===================================== 
+//= 1.0
+//===== Compatible With: ===================================== 
+//= eAthena SVN
+//===== Description: ========================================= 
+//= Pvp Warper 
+//===== Additional Comments: ================================= 
+//= 1.0 First version. [Fatterkiller|ROcrew]
+//============================================================ 
+
+prontera,160,190,4	script	Pvp Warper#1::Pvp Warper	1626,{
+                mes "[Pvp Warper]";
+                mes "Would You Like To Join Pvp Arena";
+                next;
+                menu "Izlude ["+getmapusers("pvp_y_1-2")+"/30]",Iz,"Morroc ["+getmapusers("pvp_y_2-5")+"/30]",Morroc,"Cancel",Cancel;
+
+                Iz:
+                   emotion e_com;
+                   warp "pvp_y_1-2",0,0;
+                   close;
+
+            Morroc:
+                   emotion e_com;
+                   warp "pvp_y_2-5",0,0;
+                   close;
+
+            Cancel:
+                   mes "[Pvp Warper]";
+                   mes "See You Again";
+                   next;
+                   emotion e_pif;
+                   close;
+
+}
+
+ayo_in01,183,12,3	duplicate(Pvp Warper)	Pvp Warper#2	1626
+ayo_in01,67,29,4	duplicate(Pvp Warper)	Pvp Warper#3	1626
+turbo_room,112,118,4	duplicate(Pvp Warper)	Pvp Warper#4	1626
+morocc,154,110,5	duplicate(Pvp Warper)	Pvp Warper#5	1626
+prontera,137,95,5	duplicate(Pvp Warper)	Pvp Warper#6	1626
+hugel,102,159,4	duplicate(Pvp Warper)	Pvp Warper#7	1626
+gonryun,168,140,4	duplicate(Pvp Warper)	Pvp Warper#8	1626
+alberta,145,85,4	duplicate(Pvp Warper)	Pvp Warper#9	1626
+payon,167,102,6	duplicate(Pvp Warper)	Pvp Warper#10	1626
+izlude,133,123,4	duplicate(Pvp Warper)	Pvp Warper#11	1626
+brasilis,337,246,4	duplicate(Pvp Warper)	Pvp Warper#12	1626
+louyang,96,248,4	duplicate(Pvp Warper)	Pvp Warper#13	1626
+amatsu,58,140,4	duplicate(Pvp Warper)	Pvp Warper#14	1626
+louyang,225,105,4	duplicate(Pvp Warper)	Pvp Warper#15	1626
+xmas,153,125,4	duplicate(Pvp Warper)	Pvp Warper#16	1626
+yuno,331,111,4	duplicate(Pvp Warper)	Pvp Warper#17	1626
+ayothaya,144,173,4	duplicate(Pvp Warper)	Pvp Warper#18	1626
+thana_boss,72,85,4	duplicate(Pvp Warper)	Pvp Warper#19	1626
+jawaii,209,295,4	duplicate(Pvp Warper)	Pvp Warper#20	1626
+geffen,196,114,4	duplicate(Pvp Warper)	Pvp Warper#21	1626
+prt_fild05,293,228,3	duplicate(Pvp Warper)	Pvp Warper#22	1626
+rachel,98,155,5	duplicate(Pvp Warper)	Pvp Warper#23	1626
+hu_fild02,140,244,5	duplicate(Pvp Warper)	Pvp Warper#24	1626
+yuno_fild01,197,156,5	duplicate(Pvp Warper)	Pvp Warper#25	1626
+gon_fild01,268,101,5	duplicate(Pvp Warper)	Pvp Warper#26	1626
+
+pvp_y_1-2	mapflag	nocommand	70
+pvp_y_1-2	mapflag	nosave	SavePoint
+pvp_y_1-2	mapflag	noteleport
+pvp_y_1-2	mapflag	nowarp
+pvp_y_1-2	mapflag	nowarpto
+pvp_y_1-2	mapflag	nomemo
+pvp_y_1-2	mapflag	notrade
+pvp_y_1-2	mapflag	noreturn
+pvp_y_1-2	mapflag	nobranch
+
+pvpmap	mapflag	nocommand	70
+pvpmap	mapflag	nosave	SavePoint
+pvpmap	mapflag	noteleport
+pvpmap	mapflag	nowarp
+pvpmap	mapflag	nowarpto
+pvpmap	mapflag	nomemo
+pvpmap	mapflag	notrade
+pvpmap	mapflag	noreturn
+pvpmap	mapflag	nobranch
+
+pvp_y_1-5	mapflag	nocommand	70
+pvp_y_1-5	mapflag	nosave	SavePoint
+pvp_y_1-5	mapflag	noteleport
+pvp_y_1-5	mapflag	nowarp
+pvp_y_1-5	mapflag	nowarpto
+pvp_y_1-5	mapflag	nomemo
+pvp_y_1-5	mapflag	notrade
+pvp_y_1-5	mapflag	noreturn
+pvp_y_1-5	mapflag	noreturn
+
+pvp_y_2-5	mapflag	nocommand	70
+pvp_y_2-5	mapflag	nosave	SavePoint
+pvp_y_2-5	mapflag	noteleport
+pvp_y_2-5	mapflag	nowarp
+pvp_y_2-5	mapflag	nowarpto
+pvp_y_2-5	mapflag	nomemo
+pvp_y_2-5	mapflag	notrade
+pvp_y_2-5	mapflag	noreturn
+pvp_y_2-5	mapflag	noreturn
+pvp_y_2-5	mapflag	nobranch
+
+pvp_y_2-2	mapflag	nocommand	70
+pvp_y_2-2	mapflag	nosave	SavePoint
+pvp_y_2-2	mapflag	noteleport
+pvp_y_2-2	mapflag	nowarp
+pvp_y_2-2	mapflag	nowarpto
+pvp_y_2-2	mapflag	nomemo
+pvp_y_2-2	mapflag	notrade
+pvp_y_2-2	mapflag	noreturn

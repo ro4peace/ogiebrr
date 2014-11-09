@@ -1,0 +1,97 @@
+prontera,140,226,5	script	Lotti Girl	408,{
+	//if(Weight >= MaxWeight/2) goto Low;
+	set .@zenyprice,300000;
+	
+	mes "[Lotti Girl]";
+	mes "Hello Sir! Are you out";
+	mes "shopping in the city?!";
+	next;
+	
+	mes "[Lotti Girl]";
+	mes "I'm Lotti! I'll exchange cool";
+	mes "random prizes for every";
+	mes "^ff00003 Proof of Donation^000000";
+	mes "or for^ff0000 " + .@zenyprice + " zeny.^000000";
+	next;
+	
+	mes "[Lotti Girl]";
+	mes "Our Grand prize are:";
+	mes "^ff0000Rockhand Model^000000";
+	mes "^ff0000Paperhand Model^000000";
+	mes "^ff0000Scissorhand Model^000000";
+	next;
+	
+	mes "[Lotti Girl]";
+	mes "You can still get random item";
+	mes "if you failed to get the grand";
+	mes "prize and special prizes.";
+	next;
+	
+	if(select("Deal me in!:No way...")==2)
+		close;
+	
+	mes "[Lotti Girl]";
+	mes "What do you wish to exchange?";
+	if(select("Proof of Donation:Zeny")==1)
+	{	
+		if (countitem(7179) < 3)
+			close;
+		mes "Here we go..";
+		delitem 7179,3;
+	} else {
+		if (Zeny < .@zenyprice)
+			close;
+		mes "Here we go...";
+		set Zeny,Zeny-.@zenyprice;
+	}
+	
+	set .@Total,16;
+	//<%>,<ItemID>,<Amount>
+	setarray .@P1[0],5,20067,1;
+	setarray .@P2[0],5,20068,1;
+	setarray .@P3[0],5,20069,1;
+	setarray .@P4[0],80,999,5;
+	setarray .@P5[0],70,784,5;
+	setarray .@P6[0],50,12065,3;
+	setarray .@P7[0],50,12050,3;
+	setarray .@P8[0],50,12060,3;
+	setarray .@P9[0],50,12045,3;
+	setarray .@P10[0],50,12055,3;
+	setarray .@P11[0],50,12070,3;
+	setarray .@P12[0],60,714,1;
+	setarray .@P13[0],40,678,3;
+	setarray .@P14[0],40,7136,5;
+	setarray .@P15[0],40,7135,5;
+	setarray .@P16[0],80,14003,3;
+	setarray .@Default[0],603,3;
+	set .@i, rand(1,.@Total);
+	if (rand(1,100) > getd(".@P"+.@i+"[0]"))
+	{
+		for(set .@j,0; .@j<getarraysize(.@Default); set .@j,.@j+2)
+		{
+			getitem .@Default[.@j], .@Default[.@j+1];
+			if(!.@k[0])
+			setarray .@k[0], .@Default[.@j], .@Default[.@j+1];
+		}
+	}
+	else{
+		for(set .@j,1; .@j<getarraysize(getd(".@P"+.@i)); set .@j,.@j+2)
+		{
+			getitem getd(".@P"+.@i+"["+.@j+"]"), getd(".@P"+.@i+"["+(.@j+1)+"]");
+			if (!.@k[0])
+			{
+				set .@gz,.@i;
+				setarray .@k[0], getd(".@P"+.@i+"["+.@j+"]"), getd(".@P"+.@i+"["+(.@j+1)+"]");
+				break;
+			}
+		}
+	}
+	if(1<=.@gz&&.@gz<4)
+	announce "Congratulations! "+strcharinfo(0)+" just received "+getitemname(.@k[0])+" x "+.@k[1]+" from Lotti Girl (prontera 140 226)!",0;
+	specialeffect2 248;
+	close;
+
+//Low:
+//	mes "You are Overweight!";
+//	close;
+}

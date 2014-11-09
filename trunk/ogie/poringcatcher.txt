@@ -1,0 +1,347 @@
+//= Poring Catcher - Auto Event Script
+//===== By: ================================================================================
+//= Washi - www.EarthBound-RO.com
+//===== Compatible With: ====================================================================
+//= Any eAthena Version
+//===== Description: ========================================================================
+//= Single NPC that starts automatically starts every hour.
+//===== Additional Comments: ================================================================
+//= This script is a combenation of the Dice Event by [Mahina]
+//= and the origonal Poring Catcher Event by [Wild Karrd]
+//================================================================================
+//===========
+//= OnMinute - Change this to the minute you would like this script to load. [ LINE 22 ]
+//= getitem - Change this to the Item ID of your prize. [ LINE 118 ]
+//================================================================================
+//===========
+-	script	poring#announcer	-1,{
+
+OnInit:
+    disablenpc "Poring Warper";
+    hideonnpc "Poring Catcher#evnt2";
+    end;
+
+OnClock0100:
+OnClock0400:
+OnClock0700:
+OnClock1000:
+OnClock1300:
+OnClock1600:
+OnClock1900:
+OnClock2200:
+
+OnGMStart:
+	announce "Poring Catcher : It's time to play some Poring Catcher!",0;
+    killmonster "poring_w01","All";
+    sleep2 10000;
+    announce "Poring Catcher : Please make your way to the mid of Prontera!",0;
+    sleep2 10000;
+    announce "Poring Catcher : After 1 minute, The Poring Warper will hide!",0;
+    sleep2 10000;
+    announce "Poring Catcher : Talk to the Poring Warper now if you want to join.",0;
+    enablenpc "Poring Warper";
+    initnpctimer;
+    end;
+
+OnTimer30000:
+    announce "Poring Catcher : Last 30 seconds.",0;
+    sleep2 5000;
+    announce "Poring Catcher : Hurry!!	if you want to join.",0;
+    end;
+    
+OnTimer50000:
+    announce "Poring Catcher : Last 10 seconds.",0;
+    end;
+    
+OnTimer55000:
+    announce "Poring Catcher : 5.",0;
+    end;
+    
+OnTimer56000:
+    announce "Poring Catcher : 4.",0;
+    end;
+    
+OnTimer57000:
+    announce "Poring Catcher : 3.",0;
+    end;
+    
+OnTimer58000:
+    announce "Poring Catcher : 2.",0;
+    end;
+    
+OnTimer59000:
+    announce "Poring Catcher : 1.",0;
+    end;
+    
+OnTimer60000:
+    announce "Poring Catcher : Time's up. Poring Warper open again in 3 hours.",0;
+    end;
+    
+OnTimer61000:
+    disablenpc "Poring Warper";
+    donpcevent "Poring Catcher#evnt2::OnEnable";
+    stopnpctimer;
+    end;
+}
+
+//--- Warper --//
+prontera,155,180,4	script	Poring Warper	909,{
+
+	mes "[ Poring Warper ]";
+	mes "[ Have Fun " + strcharinfo (0) + " ]";
+	warp "poring_w01",106,129;
+	end;
+}
+    
+//--------------------------------------------------
+    
+prontera,131,217,5	script	Poring Catcher	909,{
+
+if (getgmlevel()<80)
+{
+player_here:
+	mes "^FF0000[Poring Catcher Schedule]^000000";
+	mes "^0000FF[        01:00AM        ]^000000";
+	mes "^0000FF[        03:00AM        ]^000000";
+	mes "^0000FF[        05:00AM        ]^000000";
+	mes "^0000FF[        07:00AM        ]^000000";
+	mes "^0000FF[        09:00AM        ]^000000";
+	mes "^0000FF[        11:00AM        ]^000000";
+	mes "^0000FF[        13:00PM        ]^000000";
+	mes "^0000FF[        15:00PM        ]^000000";
+	mes "^0000FF[        17:00PM        ]^000000";
+	mes "^0000FF[        19:00PM        ]^000000";
+	mes "^0000FF[        21:00PM        ]^000000";
+	mes "^0000FF[        23:00PM        ]^000000";
+	next;
+	mes "^FF0000[Poring Catcher]^000000";
+	mes "Current Prize:";
+	mes "----------------------";
+	mes "^008000"+$rewardamount+" "+getitemname($rewarditem)+"s";
+	close;
+}
+gm_only:
+	if (getgmlevel() < 99) goto player_here;
+	mes "^FF0000Poring Catcher Warper^000000";
+	mes "Yes, master?";
+	mes "What can I do for you today, master?";
+	next;
+	switch(select("Start Event:Stop Event:Check Prize:Set Prize:Nothing"))
+	{
+	case 1:
+		next;
+		mes "^FF0000Poring Catcher^000000";
+		mes "Hello, GM ^008000"+strcharinfo(0)+"^000000!";
+		mes "Do you want to start the event?";
+		next;
+		switch(select("Yes:Leave"))
+		{
+		case 1:
+			next;
+			mes "^FF0000Poring Catcher^000000";
+			mes "Here we go!";
+			close2;
+			announce "GM "+strcharinfo(0)+" has started the Poring Catcher Event!",0;
+			sleep 2000;
+			donpcevent "poring#announcer::OnGMStart";
+			end;
+		case 2:
+			next;
+			mes "^FF0000Poring Catcher^000000";
+			mes "Ok, nothing changed!";
+			close;
+		}
+	case 2:
+		next;
+		mes "^FF0000Poring Catcher^000000";
+		mes "Hello, GM ^008000"+strcharinfo(0)+"^000000!";
+		mes "Do you want to stop the event?";
+		mes " ";
+		mes "^FF0000Note that you can only stop the event if it is already starting.";
+		mes "If the event is still on the giving of directions, it couldn't be stopped!^000000";
+		next;
+		switch(select("Yes:No"))
+		{
+		case 1:
+			next;
+			mes "^FF0000Poring Catcher^000000";
+			mes "Close this window to stop the event!";
+			close2;
+			goto stopbygm;
+		case 2:
+			next;
+			mes "^FF0000Poring Catcher^000000";
+			mes "Ok, nothing changed!";
+			close;
+		}
+	case 3:
+		next;
+		mes "^FF0000Poring Catcher^000000";
+		mes "Current Prize :";
+		mes "-------------------";
+		mes "^008000"+$rewardamount+" "+getitemname($rewarditem)+"s";
+		next;
+		goto gm_only;
+	case 4:
+		next;
+		mes "^FF0000Poring Catcher^000000";
+		mes "What will be the new reward?";
+		input .@itemid;
+		if (getitemname(.@itemid) == "null" || getitemname(.@itemid) == "") {next; mes "^FF0000Poring Catcher^000000"; mes "The item is not found in the database.."; next; goto gm_only; }
+		set $rewarditem, .@itemid;
+		next;
+		mes "^FF0000Poring Catcher^000000";
+		mes "How many ^008000"+getitemname($rewarditem)+"s^000000 should we give?";
+		input .@itemamount;
+		if(.@itemamount <= 0) {next; mes "^FF0000Poring Catcher^000000"; mes "Please input a # greater than 0"; next; goto gm_only; }
+		set $rewardamount,.@itemamount;
+		next;
+		mes "^FF0000Poring Catcher^000000";
+		mes "So, the winner will get ^008000"+$rewardamount+" "+getitemname($rewarditem)+"s";
+		next;
+		goto gm_only;
+	case 5:
+		next;
+		mes "^FF0000Poring Catcher^000000";
+		mes "Nothing Changed!";
+		close;
+	}
+	
+stopbygm:
+	stopnpctimer;
+	killmonster "poring_w01","All";
+	announce "Poring Catcher Event was stopped by GM "+strcharinfo(0)+"!",0;
+	sleep 2000;
+	mapwarp "poring_w01","prontera",156,171;
+	end;
+}
+    
+//--------------------------------------------------
+
+poring_w01,100,127,4	script	Poring Catcher#evnt2	715,{
+
+//--------------------------------------------------
+
+    mes "[Poring Catcher]";
+    if(PORING == 1) goto L_PORING;
+    mes "Please tell me your name";
+    next;
+    input .@name$;
+    if(.@name$ != strcharinfo(0)) {
+        mes "[Poring Catcher]";
+        mes "Are you sure thats your character name?";
+        close;
+    }
+    mes "[Poring Catcher]";
+    mes "Go home!";
+    close2;
+    announce "Poring Catcher : All laugh at, "+.@name$+". - This player tried to cheat the system. Muhahahahaha!",0;
+    warp "prontera",156,171;
+    end;
+
+L_PORING:
+    mes "Please tell me your name";
+    next;
+    input .@name$;
+    if(.@name$ != strcharinfo(0)) {
+        mes "[Poring Catcher]";
+        mes "Are you sure thats your character name?";
+        close;
+    }
+    mes "[Poring Catcher]";
+    mes "Congrats. You've won.";
+    close2;
+    announce "Poring Catcher : We have a winner, "+.@name$+". with "+$rewardamount+" "+getitemname($rewarditem)+"s",0;
+
+    getitem $rewarditem, $rewardamount; // SET THE 20085 TO THE ITEM ID OF YOUR PRIZE
+
+    set PORING,0;
+    warp "prontera",156,171;
+    hideonnpc "Poring Catcher#evnt2";
+    end;
+    
+OnEnable:
+    mapannounce "poring_w01","Poring Catcher : In 5 Minutes, I will be summoning 100 different Porings.",0;
+	initnpctimer;
+    sleep2 10000;
+    mapannounce "poring_w01","Poring Catcher : Only one of these Porings is the correct Poring.",0;
+    sleep2 10000;
+    mapannounce "poring_w01","Poring Catcher : The correct Poring is called [ Poring ], all the other Porings have different names.",0;
+    sleep2 10000;
+    mapannounce "poring_w01","Poring Catcher : If you kill the wrong Poring, you're out of the game.",0;
+    sleep2 10000;
+    mapannounce "poring_w01","Poring Catcher : The first player to kill the correct Poring wins.",0;
+    sleep2 10000;
+    mapannounce "poring_w01","Poring Catcher : That's that.. Now let's play...",0;
+    goto L_Start;
+    end;
+
+OnTimer270000:
+	mapannounce "poring_w01","Poring Catcher : Time is running out! You only got 30 seconds left!",0;
+	end;	
+OnTimer300000:
+	stopnpctimer;
+	mapannounce "poring_w01","Poring Catcher : Time is up! No one found the correct Poring!",0;
+	atcommand "@doommap";
+    killmonster "poring_w01","All";
+	sleep 3000;
+	mapwarp "poring_w01","prontera",156,171;
+	end;
+    
+L_Start:
+    mapannounce "poring_w01","Poring Catcher : 5",0;
+    sleep2 1000;
+    mapannounce "poring_w01","Poring Catcher : 4",0;
+    sleep2 1000;
+    mapannounce "poring_w01","Poring Catcher : 3",0;
+    sleep2 1000;
+    mapannounce "poring_w01","Poring Catcher : 2",0;
+    sleep2 1000;
+    mapannounce "poring_w01","Poring Catcher : 1",0;
+    sleep2 1000;
+    mapannounce "poring_w01","Poring Catcher : Lets Do This!",0;
+    areamonster "poring_w01",84,119,121,90,"Poring",1002,1,"poringwin::OnMobKilled";
+    areamonster "poring_w01",84,119,121,90,"Pouring",1002,20,"poringlose::OnMobKilled";
+    areamonster "poring_w01",84,119,121,90,"Proing",1002,20,"poringlose::OnMobKilled";
+    areamonster "poring_w01",84,119,121,90,"Poiring",1002,20,"poringlose::OnMobKilled";
+    areamonster "poring_w01",84,119,121,90,"Poing",1002,20,"poringlose::OnMobKilled";
+    areamonster "poring_w01",84,119,121,90,"Porning",1002,20,"poringlose::OnMobKilled";
+    areamonster "poring_w01",84,119,121,90,"PoriNg",1002,20,"poringlose::OnMobKilled";
+    areamonster "poring_w01",84,119,121,90,"Porong",1002,20,"poringlose::OnMobKilled";
+    areamonster "poring_w01",84,119,121,90,"P0ring",1002,10,"poringlose::OnMobKilled";
+    areamonster "poring_w01",84,119,121,90,"Por1ng",1002,10,"poringlose::OnMobKilled";
+    areamonster "poring_w01",84,119,121,90,"Porng",1002,1,"poringlose::OnMobKilled";
+    end;
+}
+
+-	script	poringwin	-1,{
+
+OnMobKilled:
+    dispbottom "Poring : Congratulations. You've got me.";
+    set PORING,1;
+    atcommand "@doommap";
+    killmonster "poring_w01","All";
+    mapannounce "poring_w01","Poring Catcher : Come to me and tell me your name.",0;
+    hideoffnpc "Poring Catcher#evnt2";
+    end;
+}
+
+-	script	poringlose	-1,{
+
+OnMobKilled:
+    dispbottom "Poring Catcher : Wahaha, you're a loser! - I wasn't the correct Poring.";
+    warp "prontera",156,171;
+    end;
+
+}
+
+// -- Mapflags
+poring_w01	mapflag	nowarp
+poring_w01	mapflag	nowarpto
+poring_w01	mapflag	noteleport
+poring_w01	mapflag	nosave
+poring_w01	mapflag	nomemo
+poring_w01	mapflag	nobranch
+poring_w01	mapflag	noloot
+poring_w01	mapflag	noskill
+poring_w01	mapflag	nopenalty
